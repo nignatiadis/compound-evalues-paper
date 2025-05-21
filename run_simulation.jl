@@ -23,7 +23,7 @@ include(joinpath(dir, "methods.jl"))
 
 
 # Monte Carlo replicates
-nreps = 5
+nreps = 200
 
 
 Random.seed!(1)
@@ -36,9 +36,9 @@ n = 2_000
 n0 = 1_800
 α = 0.1 
 
-Ks = [5]
+Ks = [5; 10]
 
-effect_sizes = [6.0]
+effect_sizes = 3.0:0.25:6.0
 
 
 variance_settings = (
@@ -49,11 +49,9 @@ variance_settings = (
 variance_keys = keys(variance_settings)
 
 
-
-
 key_combinations = collect(Iterators.product(variance_keys, effect_sizes, Ks))
 
-variance_key, effect_size, K = key_combinations[task_id]
+@show variance_key, effect_size, K = key_combinations[task_id]
 
 
 ground_truth_variance_prior = getproperty(variance_settings, variance_key)
