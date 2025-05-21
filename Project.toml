@@ -1,0 +1,11 @@
+[deps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Empirikos = "cab608d6-c565-4ea1-96d6-ce5441ba21b0"
+Gurobi = "2e9cd046-0924-5485-92f1-d5272153d98b"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
+MosekTools = "1ec41992-ff65-5c91-ac43-2df89e9693a4"
+MultipleTesting = "f8716d33-7c4a-5097-896f-ce0ecbd3ef6b"
+ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
