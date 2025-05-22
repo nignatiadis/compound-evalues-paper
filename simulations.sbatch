@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=compound
-#SBATCH --array=1-52
+#SBATCH --array=1-68
 #SBATCH --time=12:00:00
 #SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=10000

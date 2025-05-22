@@ -9,6 +9,7 @@ using JuMP
 struct OracleEvalues end 
 struct ZTestEvalues end 
 struct TTestEvalues end 
+struct TTestPvalues end 
 struct UniversalInferenceEvalues end 
 struct PluginMixtureEvalues end 
 struct FLocalizedMixtureEvalues end 
@@ -60,12 +61,19 @@ function (::TTestEvalues)(Zs, α, effect_size; Ĝ=nothing, 𝒢=nothing, G_orac
     (evalues=evals, rjs_idx=rjs_idx)
 end 
 
+function (::TTestPvalues)(Zs, α, effect_size; Ĝ=nothing, 𝒢=nothing, G_oracle=nothing, σs=nothing)
+    sim_ttest = Empirikos.SimultaneousTTest(;α=α)
+    sim_ttest_fit = fit(sim_ttest, Zs) 
+    # not really evalues but just to keep it consistent
+    (evalues=1 ./ sim_ttest_fit.pvalue, rjs_idx=sim_ttest_fit.rj_idx)
+end 
+
 function (::UniversalInferenceEvalues)(Zs, α, effect_size; Ĝ=nothing, 𝒢=nothing, G_oracle=nothing, σs=nothing)
 
-    Ts = Empirikos.NoncentralTSample.(Zs)
+    numerator_dbn = product_distribution((λ=Dirac(effect_size), σ²=Ĝ))
 
-    mixture_evalue_T = Empirikos.MixtureEValue(Dirac(effect_size), Dirac(0.0))
-    evals = mixture_evalue_T.(Ts)
+    universal_evalue = Empirikos.MixtureUniversalEValue(numerator_dbn)
+    evals = universal_evalue.(Zs)
 
     adjusted_evals = adjust(min.(1 ./ evals, 1), BenjaminiHochberg())
     rjs_idx = adjusted_evals .<= α

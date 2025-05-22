@@ -6,5 +6,9 @@ function evaluate_method(Hs, mtp_result)
     FDP = false_discoveries / max(discoveries, 1)
     Power = true_discoveries / max( sum(Hs), 1)
 
-    (FDP = FDP, Power=Power, discoveries = discoveries,)
+    average_null_evalues = mean((1 .- Hs) .* mtp_result.evalues)     
+    (FDP = FDP, 
+    Power = Power, 
+    discoveries = discoveries, 
+    average_null_evalues = average_null_evalues)
 end

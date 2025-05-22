@@ -38,7 +38,7 @@ n0 = 1_800
 
 Ks = [5; 10]
 
-effect_sizes = 3.0:0.25:6.0
+effect_sizes = 2.0:0.25:6.0
 
 
 variance_settings = (
@@ -72,6 +72,7 @@ method_res = DataFrame(
     FDP = Float64[],
     Power = Float64[],
     discoveries = Int64[],
+    average_null_evalues = Float64[],
     α = Float64[],
 )
 
@@ -87,6 +88,7 @@ npmle_G = NPMLE(𝒢, mosek_attrib)
         ztest = ZTestEvalues(),
         oracle = OracleEvalues(),
         ttest  = TTestEvalues(),
+        ttest_pvalues = TTestPvalues(),
         universal = UniversalInferenceEvalues(),
         plugin = PluginMixtureEvalues(),
         flocalized = FLocalizedMixtureEvalues(),
