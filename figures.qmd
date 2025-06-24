@@ -17,29 +17,10 @@ summary_df <- group_by(df, variance_setting, effect_size, K, method_name) %>%
                 average_null_evals = mean(average_null_evalues)) %>%
       filter(method_name != "ttest_pvalues")
 ```
-```{r}
-ggplot(filter(summary_df, method_name != "ttest_pvalues"), 
-       aes(x=effect_size, y=average_null_evals, shape=method_name, color=method_name)) + 
-    geom_point() + 
-    geom_line()  + 
-    facet_grid(variance_setting ~ K) + ylim(0,1)
-```
 
 ```{r}
-ggplot(summary_df, aes(x=effect_size, y=FDR, shape=method_name, color=method_name)) + 
-    geom_point() + 
-    geom_line()  + 
-    facet_grid(variance_setting ~ K)
+all(summary_df$FDR <= 0.1)
 ```
-
-
-```{r}
-ggplot(summary_df, aes(x=effect_size, y=Power, shape=method_name, color=method_name)) + 
-    geom_point() + 
-    geom_line()  + 
-    facet_grid(variance_setting ~ K)
-```
-
 
 
 
@@ -139,100 +120,4 @@ power_plot_2x2
 
 ```{r}
 ggsave("power_plot_2x2.pdf", power_plot_2x2, width = 8, height = 5, dpi = 500)
-```
-```{r}
-fdr_plot_2x2 <- ggplot(summary_df_plot, aes(x = effect_size, y = FDR, 
-                                             shape = method_label, 
-                                             color = method_label,
-                                             linetype = method_label)) + 
-  geom_hline(yintercept = 0.1, linetype = "dashed", color = "grey50", size = 0.7) +
-  geom_line(size = 0.9, alpha = 0.9) +
-  geom_point(size = 2.4, alpha = 0.9) + 
-  facet_grid(variance_label ~ K_label, 
-             labeller = labeller(variance_label = label_parsed, K_label = label_value)) +
-  scale_color_manual(values = method_colors, name = "Method") +
-  scale_shape_manual(values = c(8, 17, 15, 18, 19, 16), name = "Method") +
-  scale_linetype_manual(values = c(1, 2, 3, 4, 5, 6), name = "Method") +
-  scale_y_continuous(limits = c(0, 0.12), breaks = seq(0, 0.12, 0.02)) +
-  labs(
-    x = "Effect Size",
-    y = "FDR"
-  ) +
-  theme_publication() +
-  theme(legend.position = "none")
-fdr_plot_2x2
-```
-
-```{r}
-# Alternative: Power plot - 1x4 layout
-power_plot_1x4 <- ggplot(summary_df_plot, aes(x = effect_size, y = Power, 
-                                               shape = method_label, 
-                                               color = method_label,
-                                               linetype = method_label)) + 
-  geom_line(size = 0.8) +
-  geom_point(size = 3) + 
-  facet_grid(. ~ interaction(K_label, variance_setting, sep = ", ")) +
-  scale_color_manual(values = method_colors, name = "Method") +
-  scale_shape_manual(values = c(16, 17, 15, 18, 19, 8), name = "Method") +
-  scale_linetype_manual(values = c(1, 2, 3, 4, 5, 6), name = "Method") +
-  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
-  labs(
-    x = "Effect Size",
-    y = "Power",
-  ) +
-  theme_publication() +
-  theme(
-    legend.position = "bottom",
-    strip.text = element_text(size = 11),
-    aspect.ratio = 1  # Make panels more square
-  ) +
-  guides(color = guide_legend(nrow = 1),
-         shape = guide_legend(nrow = 1),
-         linetype = guide_legend(nrow = 1))
-
-power_plot_1x4
-
-```
-
-```{r}
-# Alternative: FDR plot - 1x4 layout
-fdr_plot_1x4 <- ggplot(summary_df_plot, aes(x = effect_size, y = FDR, 
-                                             shape = method_label, 
-                                             color = method_label,
-                                             linetype = method_label)) + 
-  geom_line(size = 0.8) +
-  geom_point(size = 3) + 
-  facet_grid(. ~ interaction(K_label, variance_setting, sep = ", ")) +
-  scale_color_manual(values = method_colors, name = "Method") +
-  scale_shape_manual(values = c(16, 17, 15, 18, 19, 8), name = "Method") +
-  scale_linetype_manual(values = c(1, 2, 3, 4, 5, 6), name = "Method") +
-  scale_y_continuous(limits = c(0, max(summary_df_plot$FDR) * 1.1)) +
-  labs(
-    x = "Effect Size",
-    y = "False Discovery Rate",
-    title = "False Discovery Rate by Effect Size"
-  ) +
-  theme_publication() +
-  theme(
-    legend.position = "bottom",
-    strip.text = element_text(size = 11),
-    aspect.ratio = 1  # Make panels more square
-  ) +
-  guides(color = guide_legend(nrow = 1),
-         shape = guide_legend(nrow = 1),
-         linetype = guide_legend(nrow = 1))
-```
-
-```{r}
-# Save plots (adjust dimensions as needed)
-# For 2x2 layout
-ggsave("fdr_plot_2x2.pdf", fdr_plot_2x2, width = 8, height = 4, dpi = 500)
-```
-
-```{r}
-# For 1x4 layout
-ggsave("power_plot_1x4.pdf", power_plot_1x4, width = 14, height = 5, dpi = 300)
-ggsave("fdr_plot_1x4.pdf", fdr_plot_1x4, width = 14, height = 5, dpi = 300)
-
-
 ```

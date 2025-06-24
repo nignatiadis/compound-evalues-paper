@@ -1,7 +1,10 @@
 [deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 Empirikos = "cab608d6-c565-4ea1-96d6-ce5441ba21b0"
+FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
 Gurobi = "2e9cd046-0924-5485-92f1-d5272153d98b"
 JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
